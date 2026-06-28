@@ -4,7 +4,9 @@
       <div class="w-full pb-32">
         <!-- Page Header (scrolls away) -->
         <div ref="headerRef" class="page-padding pt-6 pb-2">
-          <h1 class="mb-2 text-2xl font-bold tracking-tight text-neutral-900 md:text-3xl dark:text-white">
+          <h1
+            class="mb-2 text-2xl font-bold tracking-tight text-neutral-900 md:text-3xl dark:text-white"
+          >
             {{ title }}
           </h1>
           <p v-if="description" class="text-neutral-500 dark:text-neutral-400">
@@ -66,6 +68,12 @@ const scrollbarRef = ref();
 const headerRef = ref<HTMLElement>();
 const isSticky = ref(false);
 
+type ScrollToParams = {
+  top?: number;
+  left?: number;
+  behavior?: 'auto' | 'instant' | 'smooth';
+};
+
 const handleScroll = (e: any) => {
   if (headerRef.value) {
     const headerBottom = headerRef.value.offsetTop + headerRef.value.offsetHeight;
@@ -74,7 +82,7 @@ const handleScroll = (e: any) => {
   emit('scroll', e);
 };
 
-const scrollTo = (options: ScrollToOptions) => {
+const scrollTo = (options: ScrollToParams) => {
   scrollbarRef.value?.scrollTo(options);
 };
 
