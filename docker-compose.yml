@@ -1,0 +1,14 @@
+services:
+  alger-music-player:
+    image: ghcr.io/wrhc2010/alger-music-player:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alger-music-player
+    restart: unless-stopped
+    ports:
+      - "4488:4488"
+    environment:
+      PORT: 4488
+      NCM_API_PORT: 30488
+      MUSIC_SOURCES: migu,kugou,kuwo,pyncmd
