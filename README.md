@@ -77,6 +77,64 @@ npm install
 npm run dev
 ```
 
+## Docker 部署
+
+Docker 镜像会构建 Web 页面，并在容器内启动内置的 Netease API 与音乐解析服务。默认对外端口为 `4488`，浏览器访问 `http://localhost:4488` 即可打开 AlgerMusicPlayer。
+
+### docker run
+
+```bash
+docker run -d \
+  --name alger-music-player \
+  --restart unless-stopped \
+  -p 4488:4488 \
+  ghcr.io/wrhc2010/alger-music-player:latest
+```
+
+### docker compose
+
+```bash
+docker compose up -d
+```
+
+### GHCR 镜像
+
+```bash
+ghcr.io/wrhc2010/alger-music-player:latest
+```
+
+镜像还会发布分支名和提交 SHA 标签，例如 `feat-docker-ghcr` 与 `sha-xxxxxxx`。
+
+### 端口与环境变量
+
+- `4488`: Web 服务端口，默认映射为 `4488:4488`。
+- `PORT`: 容器内 Web 服务监听端口，默认 `4488`。
+- `NCM_API_PORT`: 容器内部 Netease API 端口，默认 `30488`，通过同源 `/api` 访问，无需额外暴露。
+- `MUSIC_SOURCES`: 音乐解析音源，默认 `migu,kugou,kuwo,pyncmd`。
+
+### 常见问题
+
+- 端口被占用：把端口映射改为其他宿主机端口，例如 `-p 8080:4488`。
+- 登录或搜索失败：确认容器可以访问外网，浏览器侧请求应使用同源 `/api`。
+- 音乐解析失败：解析依赖上游音源可用性，可以调整 `MUSIC_SOURCES` 后重启容器。
+- GHCR 拉取失败：确认镜像已发布，必要时先执行 `docker login ghcr.io`。
+
+### 更新镜像
+
+```bash
+docker pull ghcr.io/wrhc2010/alger-music-player:latest
+docker stop alger-music-player
+docker rm alger-music-player
+docker run -d --name alger-music-player --restart unless-stopped -p 4488:4488 ghcr.io/wrhc2010/alger-music-player:latest
+```
+
+使用 compose 时：
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
 ## 开发文档
 
 点击这里[开发文档](./DEV.md)
