@@ -75,6 +75,42 @@ function proxyNcmApi(req, res) {
   req.pipe(proxyReq);
 }
 
+function checkNcmApi(timeoutMs = 3000) {
+  return new Promise((resolve) => {
+    let settled = false;
+    const done = (ok) => {
+      if (!settled) {
+        settled = true;
+        resolve(ok);
+      }
+    };
+
+    const req = http.request(
+      {
+        hostname: ncmApiHost,
+        port: ncmApiPort,
+        path: '/login/status',
+        method: 'GET',
+        timeout: timeoutMs
+      },
+      (res) => {
+        res.resume();
+        res.on('end', () => {
+          const statusCode = res.statusCode || 0;
+          done(statusCode >= 200 && statusCode < 500);
+        });
+      }
+    );
+
+    req.on('timeout', () => {
+      req.destroy();
+      done(false);
+    });
+    req.on('error', () => done(false));
+    req.end();
+  });
+}
+
 async function handleMusicRequest(req, res) {
   const id = Number(req.query.id);
 
@@ -113,8 +149,15 @@ async function start() {
     checkVersion: false
   });
 
-  app.get('/healthz', (_req, res) => {
-    res.json({ status: 'ok' });
+  app.get('/healthz', async (_req, res) => {
+    const ncmApiOk = await checkNcmApi();
+
+    if (!ncmApiOk) {
+      res.status(503).json({ status: 'error', ncmApi: 'unavailable' });
+      return;
+    }
+
+    res.json({ status: 'ok', ncmApi: 'ok' });
   });
 
   app.get('/music', handleMusicRequest);

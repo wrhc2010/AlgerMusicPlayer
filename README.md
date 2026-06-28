@@ -111,6 +111,7 @@ ghcr.io/wrhc2010/alger-music-player:latest
 - `PORT`: 容器内 Web 服务监听端口，默认 `4488`。
 - `NCM_API_PORT`: 容器内部 Netease API 端口，默认 `30488`，通过同源 `/api` 访问，无需额外暴露。
 - `MUSIC_SOURCES`: 音乐解析音源，默认 `migu,kugou,kuwo,pyncmd`。
+- `/healthz`: 健康检查接口，会确认 Web 服务和内部 Netease API 均可访问。
 
 ### 常见问题
 

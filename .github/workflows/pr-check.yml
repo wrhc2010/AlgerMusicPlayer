@@ -67,6 +67,9 @@ jobs:
       - name: Lint
         run: npx eslint --max-warnings 0 "src/**/*.{ts,tsx,vue,js}"
 
+      - name: Generate type declarations
+        run: npm run build
+
       - name: Type check
         run: npm run typecheck
 
