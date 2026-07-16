@@ -90,7 +90,7 @@ docker run -d \
   --name alger-music-player \
   --restart unless-stopped \
   -p 4488:4488 \
-  ghcr.io/algerkong/alger-music-player:latest
+  ghcr.io/wrhc2010/alger-music-player:latest
 ```
 
 浏览器访问 <http://localhost:4488>。使用仓库内的 Compose 配置时运行：
@@ -106,7 +106,7 @@ docker compose build --pull
 docker compose up -d
 ```
 
-首次通过工作流发布镜像后，仓库维护者需要在 GitHub Packages 中确认 `ghcr.io/algerkong/alger-music-player` 已关联本仓库并设为 **Public**，否则匿名用户无法拉取。
+首次通过工作流发布镜像后，仓库维护者需要在 GitHub Packages 中确认 `ghcr.io/wrhc2010/alger-music-player` 已关联本仓库并设为 **Public**，否则匿名用户无法拉取。
 
 ### 配置
 
@@ -132,7 +132,7 @@ docker compose pull
 docker compose up -d
 ```
 
-`docker run` 部署需先 `docker pull ghcr.io/algerkong/alger-music-player:latest`，再删除并使用相同参数重建容器。发布工作流同时提供 `latest`、`main` 和 `sha-*` 标签；生产环境可使用 `sha-*` 固定具体版本。
+`docker run` 部署需先 `docker pull ghcr.io/wrhc2010/alger-music-player:latest`，再删除并使用相同参数重建容器。发布工作流同时提供 `latest`、`main` 和 `sha-*` 标签；生产环境可使用 `sha-*` 固定具体版本。
 
 ### 常见问题与公网部署
 

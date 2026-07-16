@@ -1,6 +1,6 @@
 services:
   alger-music-player:
-    image: ghcr.io/algerkong/alger-music-player:latest
+    image: ghcr.io/wrhc2010/alger-music-player:latest
     build:
       context: .
       dockerfile: Dockerfile
